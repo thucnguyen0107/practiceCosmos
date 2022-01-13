@@ -1,0 +1,13 @@
+syntax = "proto3";
+package cosmonaut.mars.mars;
+
+option go_package = "github.com/cosmonaut/mars/x/mars/types";
+
+message Product {
+  uint64 id = 1;
+  string productID = 2; 
+  string description = 3; 
+  string owner = 4; 
+  string price = 5; 
+  string creator = 6;
+}

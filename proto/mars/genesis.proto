@@ -3,6 +3,7 @@ package cosmonaut.mars.mars;
 
 import "gogoproto/gogo.proto";
 import "mars/params.proto";
+import "mars/product.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/cosmonaut/mars/x/mars/types";
@@ -10,5 +11,7 @@ option go_package = "github.com/cosmonaut/mars/x/mars/types";
 // GenesisState defines the mars module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Product productList = 2 [(gogoproto.nullable) = false];
+  uint64 productCount = 3;
   // this line is used by starport scaffolding # genesis/proto/state
 }
