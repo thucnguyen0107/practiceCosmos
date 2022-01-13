@@ -12,21 +12,20 @@ import (
 
 func CmdCreateProduct() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-product [product-id] [description] [owner] [price]",
+		Use:   "create-product [product-id] [description] [price]",
 		Short: "Create a new product",
-		Args:  cobra.ExactArgs(4),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argProductID := args[0]
 			argDescription := args[1]
-			argOwner := args[2]
-			argPrice := args[3]
+			argPrice := args[2]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			msg := types.NewMsgCreateProduct(clientCtx.GetFromAddress().String(), argProductID, argDescription, argOwner, argPrice)
+			msg := types.NewMsgCreateProduct(clientCtx.GetFromAddress().String(), argProductID, argDescription, clientCtx.GetFromAddress().String(), argPrice)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
