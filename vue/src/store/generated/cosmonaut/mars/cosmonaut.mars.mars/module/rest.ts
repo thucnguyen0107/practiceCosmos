@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+export type MarsMsgBuyProductResponse = object;
+
 export interface MarsMsgCreateProductResponse {
   /** @format uint64 */
   id?: string;

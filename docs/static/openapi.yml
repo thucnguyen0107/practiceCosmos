@@ -12795,6 +12795,8 @@ paths:
       tags:
         - Query
 definitions:
+  cosmonaut.mars.mars.MsgBuyProductResponse:
+    type: object
   cosmonaut.mars.mars.MsgCreateProductResponse:
     type: object
     properties:

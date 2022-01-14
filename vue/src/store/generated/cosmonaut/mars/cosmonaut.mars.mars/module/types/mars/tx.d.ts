@@ -26,6 +26,12 @@ export interface MsgDeleteProduct {
 }
 export interface MsgDeleteProductResponse {
 }
+export interface MsgBuyProduct {
+    creator: string;
+    productID: string;
+}
+export interface MsgBuyProductResponse {
+}
 export declare const MsgCreateProduct: {
     encode(message: MsgCreateProduct, writer?: Writer): Writer;
     decode(input: Reader | Uint8Array, length?: number): MsgCreateProduct;
@@ -68,12 +74,27 @@ export declare const MsgDeleteProductResponse: {
     toJSON(_: MsgDeleteProductResponse): unknown;
     fromPartial(_: DeepPartial<MsgDeleteProductResponse>): MsgDeleteProductResponse;
 };
+export declare const MsgBuyProduct: {
+    encode(message: MsgBuyProduct, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgBuyProduct;
+    fromJSON(object: any): MsgBuyProduct;
+    toJSON(message: MsgBuyProduct): unknown;
+    fromPartial(object: DeepPartial<MsgBuyProduct>): MsgBuyProduct;
+};
+export declare const MsgBuyProductResponse: {
+    encode(_: MsgBuyProductResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgBuyProductResponse;
+    fromJSON(_: any): MsgBuyProductResponse;
+    toJSON(_: MsgBuyProductResponse): unknown;
+    fromPartial(_: DeepPartial<MsgBuyProductResponse>): MsgBuyProductResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
     CreateProduct(request: MsgCreateProduct): Promise<MsgCreateProductResponse>;
     UpdateProduct(request: MsgUpdateProduct): Promise<MsgUpdateProductResponse>;
-    /** this line is used by starport scaffolding # proto/tx/rpc */
     DeleteProduct(request: MsgDeleteProduct): Promise<MsgDeleteProductResponse>;
+    /** this line is used by starport scaffolding # proto/tx/rpc */
+    BuyProduct(request: MsgBuyProduct): Promise<MsgBuyProductResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
@@ -81,6 +102,7 @@ export declare class MsgClientImpl implements Msg {
     CreateProduct(request: MsgCreateProduct): Promise<MsgCreateProductResponse>;
     UpdateProduct(request: MsgUpdateProduct): Promise<MsgUpdateProductResponse>;
     DeleteProduct(request: MsgDeleteProduct): Promise<MsgDeleteProductResponse>;
+    BuyProduct(request: MsgBuyProduct): Promise<MsgBuyProductResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

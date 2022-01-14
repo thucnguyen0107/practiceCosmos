@@ -34,6 +34,13 @@ export interface MsgDeleteProduct {
 
 export interface MsgDeleteProductResponse {}
 
+export interface MsgBuyProduct {
+  creator: string;
+  productID: string;
+}
+
+export interface MsgBuyProductResponse {}
+
 const baseMsgCreateProduct: object = {
   creator: "",
   productID: "",
@@ -557,12 +564,123 @@ export const MsgDeleteProductResponse = {
   },
 };
 
+const baseMsgBuyProduct: object = { creator: "", productID: "" };
+
+export const MsgBuyProduct = {
+  encode(message: MsgBuyProduct, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.productID !== "") {
+      writer.uint32(18).string(message.productID);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgBuyProduct {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgBuyProduct } as MsgBuyProduct;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.productID = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgBuyProduct {
+    const message = { ...baseMsgBuyProduct } as MsgBuyProduct;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.productID !== undefined && object.productID !== null) {
+      message.productID = String(object.productID);
+    } else {
+      message.productID = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgBuyProduct): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.productID !== undefined && (obj.productID = message.productID);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgBuyProduct>): MsgBuyProduct {
+    const message = { ...baseMsgBuyProduct } as MsgBuyProduct;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.productID !== undefined && object.productID !== null) {
+      message.productID = object.productID;
+    } else {
+      message.productID = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgBuyProductResponse: object = {};
+
+export const MsgBuyProductResponse = {
+  encode(_: MsgBuyProductResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgBuyProductResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgBuyProductResponse } as MsgBuyProductResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgBuyProductResponse {
+    const message = { ...baseMsgBuyProductResponse } as MsgBuyProductResponse;
+    return message;
+  },
+
+  toJSON(_: MsgBuyProductResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgBuyProductResponse>): MsgBuyProductResponse {
+    const message = { ...baseMsgBuyProductResponse } as MsgBuyProductResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreateProduct(request: MsgCreateProduct): Promise<MsgCreateProductResponse>;
   UpdateProduct(request: MsgUpdateProduct): Promise<MsgUpdateProductResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   DeleteProduct(request: MsgDeleteProduct): Promise<MsgDeleteProductResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  BuyProduct(request: MsgBuyProduct): Promise<MsgBuyProductResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -603,6 +721,18 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgDeleteProductResponse.decode(new Reader(data))
+    );
+  }
+
+  BuyProduct(request: MsgBuyProduct): Promise<MsgBuyProductResponse> {
+    const data = MsgBuyProduct.encode(request).finish();
+    const promise = this.rpc.request(
+      "cosmonaut.mars.mars.Msg",
+      "BuyProduct",
+      data
+    );
+    return promise.then((data) =>
+      MsgBuyProductResponse.decode(new Reader(data))
     );
   }
 }

@@ -4,15 +4,17 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgUpdateProduct } from "./types/mars/tx";
+import { MsgBuyProduct } from "./types/mars/tx";
 import { MsgCreateProduct } from "./types/mars/tx";
 import { MsgDeleteProduct } from "./types/mars/tx";
-import { MsgUpdateProduct } from "./types/mars/tx";
 
 
 const types = [
+  ["/cosmonaut.mars.mars.MsgUpdateProduct", MsgUpdateProduct],
+  ["/cosmonaut.mars.mars.MsgBuyProduct", MsgBuyProduct],
   ["/cosmonaut.mars.mars.MsgCreateProduct", MsgCreateProduct],
   ["/cosmonaut.mars.mars.MsgDeleteProduct", MsgDeleteProduct],
-  ["/cosmonaut.mars.mars.MsgUpdateProduct", MsgUpdateProduct],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -45,9 +47,10 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgUpdateProduct: (data: MsgUpdateProduct): EncodeObject => ({ typeUrl: "/cosmonaut.mars.mars.MsgUpdateProduct", value: MsgUpdateProduct.fromPartial( data ) }),
+    msgBuyProduct: (data: MsgBuyProduct): EncodeObject => ({ typeUrl: "/cosmonaut.mars.mars.MsgBuyProduct", value: MsgBuyProduct.fromPartial( data ) }),
     msgCreateProduct: (data: MsgCreateProduct): EncodeObject => ({ typeUrl: "/cosmonaut.mars.mars.MsgCreateProduct", value: MsgCreateProduct.fromPartial( data ) }),
     msgDeleteProduct: (data: MsgDeleteProduct): EncodeObject => ({ typeUrl: "/cosmonaut.mars.mars.MsgDeleteProduct", value: MsgDeleteProduct.fromPartial( data ) }),
-    msgUpdateProduct: (data: MsgUpdateProduct): EncodeObject => ({ typeUrl: "/cosmonaut.mars.mars.MsgUpdateProduct", value: MsgUpdateProduct.fromPartial( data ) }),
     
   };
 };

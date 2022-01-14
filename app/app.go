@@ -354,6 +354,7 @@ func New(
 		keys[marsmoduletypes.StoreKey],
 		keys[marsmoduletypes.MemStoreKey],
 		app.GetSubspace(marsmoduletypes.ModuleName),
+		app.BankKeeper,
 	)
 	marsModule := marsmodule.NewAppModule(appCodec, app.MarsKeeper, app.AccountKeeper, app.BankKeeper)
 
